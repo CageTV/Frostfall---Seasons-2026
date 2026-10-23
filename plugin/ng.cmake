@@ -1,0 +1,7 @@
+# FrostfallSeasons.dll on alandtse's CommonLibSSE-NG (Skyrim 1.5.97 to 1.6.1170 and 1.7.x, SE and AE); included by E:/WorkSpace/ng-build/CMakeLists.txt (see ng_plugin there).
+# One DLL for the regular and the ESL build of Frostfall 2026: it reads no form of Frostfall's plugin.
+find_path(FSEA_SIMPLEINI_INCLUDE_DIRS "SimpleIni.h")
+ng_plugin(TARGET FrostfallSeasons NAME FrostfallSeasons VERSION 1.0.0 AUTHOR "CageTV" ROOT "${CMAKE_CURRENT_LIST_DIR}"
+    SOURCES src/main.cpp src/Settings.cpp src/Seasons.cpp src/Menu.cpp
+    INCLUDES "${CMAKE_CURRENT_LIST_DIR}/src" "${FSEA_SIMPLEINI_INCLUDE_DIRS}"
+    PCH "${CMAKE_CURRENT_LIST_DIR}/src/PCH.h")

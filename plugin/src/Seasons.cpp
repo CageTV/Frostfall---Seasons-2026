@@ -1,5 +1,6 @@
 #include "Seasons.h"
 
+#include "Globals.h"
 #include "Polygons.h"
 #include "Settings.h"
 
@@ -150,6 +151,11 @@ namespace Seasons
 			reportBase = a_base;
 			reportCurrent = a_current;
 			reportSeen = true;
+			// the globals of the optional plugin and the mod events are written on the main thread
+			SKSE::GetTaskInterface()->AddTask([]() {
+				Globals::Refresh();
+				Globals::Notify();
+			});
 		}
 
 		bool Register(RE::BSScript::IVirtualMachine* a_vm)

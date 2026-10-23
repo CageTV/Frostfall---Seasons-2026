@@ -17,17 +17,34 @@ an SKSE plugin instead of global variables and a plugin file.
 | `SKSE/Plugins/FrostfallSeasons.dll` | the seasonal temperatures, the regions of the DLC and new lands, the settings page, `FrostfallSeasons.ini` |
 | `Scripts/_Frost_ClimateSystem.pex` | Frostfall 2026's climate script with the seasons applied. **The only Frostfall script it overwrites.** |
 | `Scripts/FrostfallSeasonsNative.pex` | the bridge between the two |
+| `Frostfall 2026 - Seasons.esp` (optional) | an ESL-flagged plugin with no masters and 32 read-only global variables, see *For patches and other mods* |
 
-**There is no plugin (no ESP, no ESL).** Nothing of Frostfall's plugin is read or changed, so the same files work with both the regular and the
+The seasons themselves need **no plugin**. Nothing of Frostfall's plugin is read or changed, so the same files work with both the regular and the
 ESL build of Frostfall 2026, and the old `Frostfall_Seasonal_Temps_patch.esp` is not needed. Every call to the plugin is guarded: without the DLL,
 or with *Seasonal temperatures* switched off, Frostfall 2026 gives its own temperatures exactly.
 
 ## Install
 
+One FOMOD installer. It always installs the DLL and the scripts, and offers the **Form hooks (ESL plugin)** as an option.
+
 1. Install **Frostfall 2026** (regular or ESL) and the SKSE Menu Framework.
 2. **Remove the old Frostfall - Seasons** (its plugin, scripts and MCM). It overwrites the same scripts and cannot be used together.
 3. Install this over Frostfall 2026 so that `_Frost_ClimateSystem.pex` is replaced (it is the only file of Frostfall 2026 it touches).
 4. Settings: SKSE Menu Framework > Frostfall > **Seasons**. They are saved to `Data/SKSE/Plugins/FrostfallSeasons.ini`.
+
+## For patches and other mods
+
+Most mods only need Frostfall's own temperature, which already includes the seasons: `FrostUtil.GetCurrentTemperature()` and the
+`FrostfallCurrentTemperatureReadOnly` global. For the seasons themselves:
+
+- **Papyrus:** `FrostfallSeasonsNative` has `IsInstalled()`, `Active()`, `GetCurrentMonth()`, `GetRegionBaseTemperature(region, x, y, z)`,
+  `GetDayPhase(hour)`, `GetPhasePenalty(phase)`. Check `FrostfallSeasonsNative.Active()` first.
+- **Mod events** (register with `RegisterForModEvent`): `FrostfallSeasons_MonthChanged` (string = month name, number = month 0-11) and
+  `FrostfallSeasons_SettingsChanged`.
+- **Global variables** (the optional plugin, `Frostfall 2026 - Seasons.esp`, FormIDs 000800 to 00081F, editor ids `FrostfallSeasons_...`): `Enabled`, `Month`,
+  `MonthType`, `MonthTemperature`, `Region` (Frostfall's region code), `RegionBaseTemperature`, `DayPhase`, `DangerousMountain`, `ColdCities`,
+  `TEMP_COLD` ... `TEMP_HOT`, `REGION_..._BASE_TEMP` for the ten regions, the dawn and dusk hours and the two penalties. They are read-only mirrors:
+  the DLL writes them, and changing one changes nothing. The settings are in `FrostfallSeasons.ini`.
 
 Frostfall works the temperature out again when the weather, the region, the time of day, the month or a setting changes, so a changed value is
 felt at its next update (a few seconds).

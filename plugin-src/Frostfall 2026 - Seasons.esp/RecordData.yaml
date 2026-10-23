@@ -1,0 +1,13 @@
+SpriggitSource:
+  PackageName: Spriggit.Yaml.Skyrim
+  Version: 0.41
+ModKey: Frostfall 2026 - Seasons.esp
+GameRelease: SkyrimSE
+ModHeader:
+  Stats:
+    Version: 1.7
+  Flags:
+  - Small
+  Author: Frostfall 2026 - Seasons
+  Description: Optional add-on for Frostfall 2026 - Seasons. Read-only global variables that mirror the seasons for patches and scripts; the settings live in FrostfallSeasons.ini.
+  INTV: 1

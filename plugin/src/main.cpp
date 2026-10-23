@@ -1,3 +1,4 @@
+#include "Globals.h"
 #include "Menu.h"
 #include "Seasons.h"
 #include "Settings.h"
@@ -21,6 +22,8 @@ namespace
 	void OnMessage(SKSE::MessagingInterface::Message* a_message)
 	{
 		if (a_message->type == SKSE::MessagingInterface::kDataLoaded) {
+			Globals::Init();
+			Globals::Notify();
 			Menu::Register();
 		}
 	}

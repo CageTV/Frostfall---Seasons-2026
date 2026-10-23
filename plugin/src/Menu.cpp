@@ -1,5 +1,6 @@
 #include "Menu.h"
 
+#include "Globals.h"
 #include "Seasons.h"
 #include "Settings.h"
 
@@ -57,6 +58,10 @@ namespace Menu
 			if (a_changed) {
 				dirty = true;
 				++Settings::version;  // Frostfall works the temperature out again at its next update
+				SKSE::GetTaskInterface()->AddTask([]() {
+					Globals::Refresh();
+					Globals::Notify();
+				});
 			}
 			return a_changed;
 		}
